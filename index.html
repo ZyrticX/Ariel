@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+    <meta charset="UTF-8">
+    <title>ברכת שלום מותאמת אישית</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            text-align: center;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        input {
+            padding: 5px;
+            margin: 5px;
+        }
+        button {
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        #loadingScreen {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #556B2F;
+            color: white;
+            text-align: center;
+            padding-top: 20%;
+            font-size: 24px;
+            z-index: 1000;
+        }
+        #errorMessage {
+            color: red;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>ברוכים הבאים</h2>
+        <input type="text" id="nameInput" placeholder="שם (בעברית)">
+        <input type="password" id="passwordInput" placeholder="סיסמה">
+        <button onclick="login()">כניסה</button>
+        <p id="errorMessage"></p>
+    </div>
+
+    <div id="loadingScreen">
+        <p id="loadingMessage"></p>
+    </div>
+
+    <script>
+        const users = ['אריאל', 'יובל', 'יבגני'];
+        const password = '888';
+
+        function isHebrew(str) {
+            return /^[\u0590-\u05FF\s]+$/.test(str);
+        }
+
+        function login() {
+            const name = document.getElementById('nameInput').value.trim();
+            const enteredPassword = document.getElementById('passwordInput').value;
+            const errorMessage = document.getElementById('errorMessage');
+            
+            if (!name || !isHebrew(name)) {
+                errorMessage.textContent = 'אנא הכנס שם תקין בעברית';
+                errorMessage.style.display = 'block';
+                return;
+            }
+
+            if (users.includes(name) && enteredPassword === password) {
+                errorMessage.style.display = 'none';
+                showLoadingScreen(name);
+            } else {
+                errorMessage.textContent = 'שם משתמש או סיסמה לא נכונים';
+                errorMessage.style.display = 'block';
+            }
+        }
+
+        function showLoadingScreen(name) {
+            const loadingScreen = document.getElementById('loadingScreen');
+            const loadingMessage = document.getElementById('loadingMessage');
+            loadingScreen.style.display = 'block';
+            loadingMessage.textContent = `שלום ${name}, ברוך הבא! חברים טובים תמיד שם בשבילך.`;
+            
+            setTimeout(() => {
+                loadingScreen.style.display = 'none';
+                alert(`ברוך הבא, ${name}! אנחנו שמחים לראות אותך.`);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
